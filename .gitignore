@@ -130,3 +130,10 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# TextMaker things
+rapport/*.aux
+rapport/*.dvi
+rapport/*.nlo
+rapport/*.out
+rapport/*.synctex.gz
