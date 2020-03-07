@@ -1,0 +1,145 @@
+% !TeX spellcheck = fr_CA
+\documentclass[letterpaper, 12pt]{article}
+
+% Encoding
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+\usepackage{cancel}
+
+% Margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
+% One half spacing
+\usepackage{setspace}
+\onehalfspacing
+% Paragraph indentation
+\setlength{\parindent}{0cm}
+% Page numbering to the right
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancypagestyle{plain}{\pagestyle{fancy}}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0cm}
+\renewcommand{\footrulewidth}{0cm}
+% Footnotes
+\usepackage[bottom]{footmisc}
+
+% Abstract
+\usepackage{abstract}
+% Table of contents, list of figures and tables
+\usepackage{tocloft}
+\usepackage[notindex, nottoc, notlof, notlot]{tocbibind}
+% List of abbreviations
+\usepackage{nomencl}
+\makenomenclature
+% Appendices
+\usepackage[title, titletoc]{appendix}
+% Bibliography
+\usepackage[numbers]{natbib}
+\usepackage{url}
+\def\UrlBreaks{\do\/\do-}
+
+% Figures
+\usepackage{float, graphicx}
+% Tables
+\usepackage{booktabs, longtable, fonttable}
+% SI units
+\usepackage[squaren, Gray]{SIunits}
+% Mathematics
+\usepackage[tbtags]{amsmath}
+\usepackage{amssymb, mathrsfs}
+% Drawings
+\usepackage{tikz}
+% Hypertext
+\usepackage[colorlinks=false, pdfborder={0 0 0}]{hyperref}
+
+% Document in french
+\usepackage[french]{babel}
+
+% Matrice augmenté
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+    \hskip -\arraycolsep
+    \let\@ifnextchar\new@ifnextchar
+    \array{#1}}
+\makeatother
+
+\newcommand{\matr}[1]{\mathbf{#1}}
+
+\begin{document}
+    % Title page
+    \begin{titlepage}
+        \begin{center}
+            \begin{large}
+                \textbf{FACULTÉ DES SCIENCES} \\
+                \textbf{DÉPARTEMENT D'INFORMATIQUE}
+            \end{large}
+            \vfill
+            \begin{Large}
+                \textbf{IFT712 - Techniques d'apprentissage} \\
+                TP1
+            \end{Large}
+            \vfill
+            \textit{préparé par} \\
+            \begin{tabular}{ccc}
+                \textbf{Agathe Le Bouler (leba3207)} \\
+                \textbf{Philippe Spino (spip2401)} \\
+                \textbf{Gabriel Gibeau Sanchez (gibg2501)}\\
+            \end{tabular}
+            \vfill
+            \textit{présenté à} \\
+            \textbf{Pierre-Marc Jodoin} \\
+            \vfill
+            31 janvier 2020
+        \end{center}
+    \end{titlepage}
+    \pagebreak
+    
+    \pagenumbering{roman}
+    
+    % Table of contents
+    %\tableofcontents
+    \pagebreak
+    
+    % List of figures
+    %\renewcommand{\listfigurename}{Liste des figures}
+    \renewcommand{\figurename}{Figure}
+    \renewcommand{\cftfigpresnum}{Figure }
+    \renewcommand{\cftfignumwidth}{2cm}
+    %\listoffigures
+    %\pagebreak
+%    
+%    % List of tables
+    \renewcommand{\tablename}{Tableau}
+    \renewcommand{\cfttabpresnum}{Tableau }
+    \renewcommand{\cfttabnumwidth}{2cm}
+%    \listoftables
+%    \pagebreak
+    
+    % List of abbreviations
+    %\renewcommand{\nomname}{Liste des symboles et abréviations}
+    %\renewcommand{\nomlabel}[1]{\hfil #1 \hfil}
+    %\printnomenclature
+    %\pagebreak
+    
+    % Beginning of document
+    \pagenumbering{arabic}
+    \input{reponse}
+    \pagebreak
+    
+    % Appendices
+    %\renewcommand{\appendixname}{Annexe}
+    %\begin{appendices}
+    %    \input{annexea}
+        
+    %\end{appendices}
+    \pagebreak
+    
+    % Bibliography
+    \singlespacing
+    \renewcommand{\refname}{Bibliographie}
+    \bibliographystyle{IEEEtranN}
+    %\bibliography{biblio}
+    
+\end{document}

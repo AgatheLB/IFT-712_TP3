@@ -1,0 +1,107 @@
+% !TeX spellcheck = fr_CA
+\section{Question 1}
+On a l'équation de l'entropie jointe:
+$$H[x, y] = - \sum_x  \sum_y p(x, y) \log_2(p(x, y)) $$
+
+On sait que :
+\begin{equation}
+    \textit{Product Rule: } p(x, y) = p(y|x)\cdot p(x) \label{eq:product_rule} \\
+\end{equation}
+
+\begin{equation}
+    \text{Entropie conditionnelle: } H[y|x] = - \sum_x  \sum_y p(x, y) \log_2(p(y|x)) \label{eq:conditional_entropy}\\
+\end{equation}
+
+\begin{equation}
+    \text{Entropie: } H[x] = - \sum_x  p(x) \log_2(p(x)) \label{eq:entropy_of_x}\\
+\end{equation}
+
+En utilisant la relation \ref{eq:product_rule} on peut substituer \(p(x,y)\) par sa décomposition:
+\begin{equation}
+    \begin{split}
+        H[x, y]&= - \sum_x  \sum_y p(x, y) \log_2(p(y|x).p(x))\\
+        &= - \sum_x  \sum_y p(x, y) [\log_2(p(y|x)) + \log_2(p(x))]\\
+        &= - \sum_x  \sum_y \left[ p(x, y)\log_2(p(y|x) + p(x, y)\log_2(p(x))) \right]\\
+        &= - \sum_x  \sum_y p(x, y) \log_2( p(y|x)) - \sum_x  \sum_y p(x, y) \log_2( p(x)) \label{eq:fin_develop_1}
+    \end{split}
+\end{equation}
+
+Dans le deuxième terme du membre de droite de l'équation \ref{eq:fin_develop_1}, on peut marginaliser \(y\) en utilisant la \textbf{\textit{sum rule}} \(\sum_y p(x, y) =  p(x)\) :
+\begin{equation}
+    H[x, y] = - \sum_x  \sum_y p(x, y) \log_2( p(y|x)) - \sum_x p(x) \log_2( p(x)) \label{eq:develop_subs}
+\end{equation}
+
+On voit alors que le premier et le deuxième terme du membre de droite de l'équation \ref{eq:develop_subs} correspondent aux définitions de l'entropie conditionnelle et simple respectivement, données par les équations \ref{eq:conditional_entropy} et \ref{eq:entropy_of_x}. En effectuant la substitution on obtient:
+\begin{equation*}
+        H[x, y] = H[y|x] + H[x]\\
+\end{equation*}
+
+\section{Question 2}
+Dans le cas discret, on sait que:
+\begin{equation*}
+    I[x] = \sum_x \sum_y p(x, y) \log_2\left(\frac{p(x, y)}{p(x)p(y)}\right)
+\end{equation*}
+On utilise la \textbf{\textit{product rule}} (équation \ref{eq:product_rule}) pour substituer \(p(x,y)\):
+
+\begin{equation*}
+    \begin{split}
+        I[x] &= \sum_x \sum_y p(x, y) \log_2 \left( \frac{p(x|y) \cdot \cancel{p(y)}}{p(x) \cdot \cancel{p(y)}} \right) \\
+        &=\sum_x \sum_y p(x, y) \left[ \log_2 \left( \frac{1}{p(x)} \right) + \log_2(p(x|y)) \right] \\
+        &=\sum_x \sum_y \left[p(x, y) \log_2 \left( \frac{1}{p(x)} \right) + p(x, y) \log_2(p(x|y)) \right] \\
+        &=\sum_x \sum_y p(x, y) \log_2 \left( \frac{1}{p(x)}\right) + \sum_x \sum_y p(x, y) \log_2(p(x|y))
+    \end{split}
+\end{equation*}
+
+D'un côté on remarque que $y$ peut être marginalisé dans le premier terme, et peut être ainsi réduit. De l'autre, le second terme correspond à $-H[x|y]$.
+\begin{equation*}
+    \begin{split}
+        I[x] & = \sum_x p(x) \log_2(\frac{1}{p(x)}) - H[x|y] \\
+        & = -\sum_x p(x) \log_2(p(x)) - H[x|y]
+    \end{split}
+\end{equation*}
+
+Ici le premier terme équivaut à $H[x]$. \newline
+On peut donc conclure effectivement: $$I[x, y] = H[x]-H|x|y]$$
+
+\section{Question 3}
+Par définition:
+$$ cov[x, y] = E_{x y}[(x-E_x[x])(y-E_y[y])]$$
+
+En développant,
+\begin{equation*}
+    \begin{split}
+        &E_{x y}[(x y - x E_y[y] - y E_x[x] + E_x[x] E_y[y])] \\
+        &E_{x y}[x y] - E_{xy}[x E_y[y]] - E_{xy}[y E_x[x]] + E_x[x] E_y[y] \\
+        &E_{x y}[x y] - E_x[x] E_y[y] - E_y[y] E_x[x] + E_x[x] E_y[y] \\
+        &cov[x, y] = E_{x y}[x y] - E_x[x] E_y[y]
+    \end{split}
+\end{equation*}
+
+\section{Question 4}
+$x=\{0, 0, 0, 1, 0, 1, 0, 0, 0, 1\}$
+\subsection{Calcul de p(x)}
+Ici $ x \in \{0, 1\}$
+$$p(x=0) = \frac{7}{10} = 0.7$$
+$$p(x=1) = \frac{3}{10} = 0.3$$
+\subsection{Calcul de E[x]}
+$$E[x] = \sum_{x \in \{0, 1\}} x.p(x) = 0*0.7 + 1*0.3 = 0.3$$
+
+\subsection{Calcul de var[x]}
+\begin{equation*}
+    \begin{split}
+        var[x] = E&[(x-E[x])^2] \implies\\
+        (0 - E[x])^2 \cdot p(x=0)& + (1 - E[x])^2 \cdot p(x=1) \\
+        (0 - 0.3)^2 \cdot 0.7 + &(1 - 0.3)^2 \cdot 0.3 \\
+        var[x] &= 0.21
+    \end{split}
+\end{equation*}
+
+\subsection{Calcul de H[x]}
+\begin{equation*}
+    \begin{split}
+        H[x] = &-\sum_x p(x) \log_2(p(x)) \\
+        &-( p(x=0)\log_2(p(x=0)) + p(x=1)\log_2(p(x=1)) ) \\
+        &-( 0.7\log_2(0.7) + 0.3\log_2(0.3) ) \\
+        H[x] \approx&\> 0.88
+    \end{split}
+\end{equation*}
