@@ -17,7 +17,7 @@ class MAPnoyau:
         sigma_square: paramètre du noyau rbf
         b, d: paramètres du noyau sigmoidal
         M,c: paramètres du noyau polynomial
-        noyau: rbf, lineaire, olynomial ou sigmoidal
+        noyau: rbf, lineaire, polynomial ou sigmoidal
         """
         self.lamb = lamb
         self.a = None
@@ -28,8 +28,6 @@ class MAPnoyau:
         self.d = d
         self.noyau = noyau
         self.x_train = None
-
-        
 
     def entrainement(self, x_train, t_train):
         """
@@ -50,31 +48,34 @@ class MAPnoyau:
         l'equation 6.8 du livre de Bishop et garder en mémoire les données
         d'apprentissage dans ``self.x_train``
         """
-        #AJOUTER CODE ICI
-        
+        self.x_train = x_train
+        K = self.get_kernel(x_train)
+        print(K.shape)
+        self.a = np.linalg.inv(K + self.lamb * np.identity(len(x_train))).dot(t_train)
+
     def prediction(self, x):
         """
         Retourne la prédiction pour une entrée representée par un tableau
         1D Numpy ``x``.
 
         Cette méthode suppose que la méthode ``entrainement()`` a préalablement
-        été appelée. Elle doit utiliser le champs ``self.a`` afin de calculer
+        été appelée. Elle doit utiliser le champ ``self.a`` afin de calculer
         la prédiction y(x) (équation 6.9).
 
         NOTE : Puisque nous utilisons cette classe pour faire de la
         classification binaire, la prediction est +1 lorsque y(x)>0.5 et 0
         sinon
         """
-        #AJOUTER CODE ICI
-        return 0
+        K = self.get_kernel(x)
+        y = np.sum(K.T.dot(self.a))
+        return int(y > 0.5)
 
     def erreur(self, t, prediction):
         """
         Retourne la différence au carré entre
         la cible ``t`` et la prédiction ``prediction``.
         """
-        # AJOUTER CODE ICI
-        return 0.
+        return (t - prediction) ** 2
 
     def validation_croisee(self, x_tab, t_tab):
         """
@@ -103,3 +104,17 @@ class MAPnoyau:
         plt.contourf(iX, iY, contour_out > 0.5)
         plt.scatter(x_tab[:, 0], x_tab[:, 1], s=(t_tab + 0.5) * 100, c=t_tab, edgecolors='y')
         plt.show()
+
+    def get_kernel(self, x):
+        if self.noyau == "rbf":
+            # TODO: fix K size (currently Nx1)
+            K = np.exp(- np.linalg.norm(self.x_train - x, axis=1) / 2 * self.sigma_square)
+        elif self.noyau == "lineaire":
+            K = self.x_train.dot(x.T)
+        elif self.noyau == "polynomial":
+            K = (self.x_train.dot(x.T) + self.c) ** self.M
+        elif self.noyau == "sigmoidal":
+            K = np.tanh(self.b * self.x_train.dot(x.T) + self.d)
+        else:
+            raise ValueError("Noyau non supporté.")
+        return K  # size NxN
