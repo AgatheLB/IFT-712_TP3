@@ -56,3 +56,104 @@ que l'on peut réécrire tel que:
 \end{split}
 \end{equation}
 qui etst la représentation duale de $J(\overrightarrow{w})$.
+
+On définit la matrice de Gram $K$ telle qu'une matrice symétrique $NxN$ où chaque élément est une fonction noyau telle que: $ K_{nm} = \overrightarrow{\phi} (\overrightarrow{x_n})^T \overrightarrow{\phi} (\overrightarrow{x_m}) = k(\overrightarrow{x_n}, \overrightarrow{x_m})$.
+
+On exprime donc $K$ tel que: $K = \Phi \Phi^T$
+
+On peut alors réécrire la représentation duale de $J(\overrightarrow{w})$ telle que:
+\begin{equation}
+\begin{split}
+	J(\overrightarrow{a}) = \frac{1}{2} \overrightarrow{a}^T K K \overrightarrow{a} - \overrightarrow{a}^T K t + \frac{1}{2} t^T t + \frac{\lambda}{2} \overrightarrow{a}^T K \overrightarrow{a}
+\end{split}
+\end{equation}
+
+On détermine le gradient de $J(\overrightarrow{a})$ par rapport à $\overrightarrow{a}$ et on le force à 0 pour déterminer le meilleur vecteur tel que les données sont les mieux classifiées.
+
+\begin{equation}
+\begin{split}
+	\nabla_{\overrightarrow{a}} J(\overrightarrow{a}) &= 0 \\
+	\iff \frac{\partial}{\partial \overrightarrow{a}} \left(\frac{1}{2} \overrightarrow{a}^T K K \overrightarrow{a} - \overrightarrow{a}^T K \overrightarrow{t} + \frac{1}{2} \overrightarrow{t}^T \overrightarrow{t} + \frac{\lambda}{2} \overrightarrow{a}^T K \overrightarrow{a}\right) &= 0 \\
+	\iff \overrightarrow{a} K K - K \overrightarrow{t} + \lambda \overrightarrow{a} K &= 0 \\
+	\iff \overrightarrow{a}(KK+\lambda K) &= K \overrightarrow{t}\\
+	\iff \overrightarrow{a} &= \frac{K \overrightarrow{t}}{KK + \lambda K} \\
+	\iff \overrightarrow{a} &= \frac{\cancel{K} \overrightarrow{t}}{\cancel{K}(K+\lambda I_N)} \\
+	\iff \overrightarrow{a} &= (K + \lambda I_N)^{-1} \overrightarrow{t}
+\end{split}
+\end{equation}
+
+Reprenons maintenant notre modèle de régression linéaire tel que: $ y(\overrightarrow{x}) = \overrightarrow{w}^T \overrightarrow{\phi}(\overrightarrow{x}) $, où nous pouvons exprimer $ \overrightarrow{w}^T $ tel que: $\overrightarrow{w}^T = \Phi \overrightarrow{a}^T$ .
+
+\begin{equation}
+\begin{split}
+	y(\overrightarrow{x}) = \overrightarrow{w}^T \overrightarrow{\phi}(\overrightarrow{x}) = \Phi \overrightarrow{a}^T \overrightarrow{\phi}(\overrightarrow{x})
+\end{split}
+\end{equation}
+Nous pouvons remplacer $\overrightarrow{a}^T$ par l'expresion trouvée via le calcul du gradient.
+\begin{equation}
+\begin{split}
+	\iff y(\overrightarrow{x}) = \Phi \left((K + \lambda I_N)^{-1} \overrightarrow{t}\right)^T \overrightarrow{\phi}(\overrightarrow{x})
+\end{split}
+\end{equation}
+On sait que: $\Phi = \sum_{n=1}^N \overrightarrow{\phi}(\overrightarrow{x_n})$
+\begin{equation}
+\begin{split}
+	\iff y(\overrightarrow{x}) = \left((K + \lambda I_N)^{-1} \overrightarrow{t}\right)^T \sum_{n=1}^N \overrightarrow{\phi}(\overrightarrow{x_n})^T\overrightarrow{\phi}(\overrightarrow{x})
+\end{split}
+\end{equation}
+Or on sait que la fonction noyau est définie telle que: $k(\overrightarrow{x_n}, \overrightarrow{x_m}) = \overrightarrow{\phi}(\overrightarrow{x_n})^T \overrightarrow{\phi}(\overrightarrow{x})$
+\begin{equation}
+\begin{split}
+	\iff y(\overrightarrow{x}) = \left((K + \lambda I_N)^{-1} \overrightarrow{t}\right)^T k(\overrightarrow{x_n}, \overrightarrow{x})
+\end{split}
+\end{equation}
+On définit maintenant $k(\overrightarrow{x})$ comme la forme vectorisée des éléments de fonctions noyaux $ k_n(\overrightarrow{x}) = k(\overrightarrow{x_n}, \overrightarrow{x}) $
+\begin{equation}
+\begin{split}
+	\iff y(\overrightarrow{x}) = \left((K + \lambda I_N)^{-1} \overrightarrow{t}\right)^T k(\overrightarrow{x}) \\
+	\iff y(\overrightarrow{x}) = k(\overrightarrow{x})^T (K+\lambda I_N)^{-1} \overrightarrow{t}
+\end{split}
+\end{equation}
+\textcolor{red}{TODO: conclusion}
+
+\section{Question 2}
+Un vecteur de support est un exemple de l'ensemble des données d'entraînement qui est situé sur la marge d'un modèle Machine à Vecteur de Support. On définit la marge comme la plus petite distance entre la surface de séparation du modèle entre les classes et l'ensemble des données d'entraînement. 
+
+Pour un modèle, on exprime ses prédictions telles que: $y_{\overrightarrow{w}}(\overrightarrow{\phi}(\overrightarrow{x_n})) = \overrightarrow{w}^T \overrightarrow{\phi}(\overrightarrow{x_n})$, où $\overrightarrow{\phi}(\overrightarrow{x_n})$ peut se révéler être un vecteur de support.
+
+On se place dans un cas où les données sont non linéairement séparables et on envisage une utilisation d'une représentation primal. Aussi, on accepte qu'un nombre restreint de données soient en-deçà de la marge afin d'éviter au maximum le sur-apprentissage.
+On dispose alors des contraintes telles que:
+\begin{equation}
+\begin{cases}
+      t_n\left(\overrightarrow{w}^T \overrightarrow{\phi}(\overrightarrow{x_n}) + w_0\right) = 1 \\
+      C \sum_{n=1}^N \xi_n = 1
+\end{cases}       
+\end{equation}
+$\xi_n$ représente la variable de ressort permettant d'accepter des données mal classées pour notre modèle et C est un hyper-paramètre.
+
+On a alors:
+\begin{equation}
+	argmin_{\overrightarrow{w}, w_0} \left(\frac{1}{2} \left\lVert\overrightarrow{w}\right\rVert^2 + C \sum_{n=1}^N \xi_n \right)
+\end{equation}
+tel que: $t_n\left(y_{\overrightarrow{w}}(\overrightarrow{\phi}(\overrightarrow{x_n}))\right) \geqslant 1 - \xi_n $ et $\forall n, \xi_n \geqslant 0 $
+
+La contrainte $t_n\left(y_{\overrightarrow{w}}(\overrightarrow{\phi}(\overrightarrow{x_n}))\right) \geqslant 1 - \xi_n$ peut être réécrite telle que:
+$$
+\xi_n \geqslant 1 - t_n\left(y_{\overrightarrow{w}}(\overrightarrow{\phi}(\overrightarrow{x_n}))\right)
+$$
+Si on remplace $\xi_n$ dans l'expression de la représentation primale \textcolor{red}{TODO: référence équation}, on a alors:
+\begin{equation}
+	\iff argmin_{\overrightarrow{w}, w_0} \left(\frac{1}{2} \left\lVert\overrightarrow{w}\right\rVert^2 \right) + C \sum_{n=1}^N 1 - t_n\left(y_{\overrightarrow{w}}(\overrightarrow{\phi}(\overrightarrow{x_n}))\right)
+\end{equation}
+considérant la contrainte $1 - t_n\left(y_{\overrightarrow{w}}(\overrightarrow{\phi}(\overrightarrow{x_n}))\right) \geqslant 0$
+\begin{equation}
+\begin{split}
+	&\iff argmin_{\overrightarrow{w}, w_0} \left(\frac{1}{2} \left\lVert\overrightarrow{w}\right\rVert^2 \right) + C \sum_{n=1}^N max\left(0, 1 - t_n\left(y_{\overrightarrow{w}}(\overrightarrow{\phi}(\overrightarrow{x_n}))\right)\right) \\
+	&\iff argmin_{\overrightarrow{w}, w_0} \sum_{n=1}^N max\left(0, 1 - t_n\left(y_{\overrightarrow{w}}(\overrightarrow{\phi}(\overrightarrow{x_n}))\right)\right) + \lambda  \left\lVert\overrightarrow{w}\right\rVert^2
+\end{split}
+\end{equation}
+avec $\lambda = \frac{C}{2}$
+
+On reconnaît ici l'expression de la fonction d'erreur de Hinge.
+
+
