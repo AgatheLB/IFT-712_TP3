@@ -89,10 +89,78 @@ class MAPnoyau:
         de 0.000000001 à 2, les valeurs de ``self.c`` de 0 à 5, les valeurs
         de ''self.b'' et ''self.d'' de 0.00001 à 0.01 et ``self.M`` de 2 à 6
         """
-        # AJOUTER CODE ICI
+        space = 15
+        sigmas = np.linspace(1e-9, 2, num=space)
+        lambdas = np.linspace(1e-9, 2, num=space)
+        C = np.linspace(0, 5, num=space)
+        M = np.linspace(2, 6, num=space)
+        D = np.linspace(1e-5, 1e-2, num=space)
+
+        self.x_train = x_tab
+        K = self.get_kernel(x_tab)
+
+        # On cherche la combinaison donnant le meilleure score.
+        best_score = -np.inf
+        best_combo = None
+        if self.noyau == "rbf":
+            for s in sigmas:
+                for l in lambdas:
+                    self.sigma_square = s
+                    self.lamb = l
+                    K = self.get_kernel(x_tab)
+                    a = np.linalg.inv(K + l * np.identity(len(x_tab))).dot(t_tab)
+                    score = np.sum(K.T.dot(a))
+                    if score > best_score:
+                        best_score = score
+                        self.a = a
+                        best_combo = (s,l)
+            print('la meilleur combinaison etait: sigma_square:',best_combo[0], ', lambda: ',best_combo[1])
+        elif self.noyau == "lineaire":
+            for lamb in lambdas:
+                self.lamb = lamb
+                K = self.get_kernel(x_tab)
+                a = np.linalg.inv(K + 1 * np.identity(len(x_tab))).dot(t_tab)
+                score = np.sum(K.T.dot(a))
+                if score > best_score:
+                    best_score = score
+                    best_combo = lamb
+                    self.a = a
+            print('le meilleur lamda etait: ', best_combo)
+        elif self.noyau == "polynomial":
+            for m in M:
+                for c in C:
+                    for lamb in lambdas:
+                        self.M = m
+                        self.c = c
+                        self.lamb = lamb
+                        K = self.get_kernel(x_tab)
+                        a = np.linalg.inv(K + lamb * np.identity(len(x_tab))).dot(t_tab)
+                        score = np.sum(K.T.dot(a))
+                        if score > best_score:
+                            best_score = score
+                            self.a = a
+                            best_combo = (m,c)
+            print('la meilleur combinaison etait: m:', best_combo[0], ', c:', best_combo[1])
+        elif self.noyau == "sigmoidal":
+            for d in D:
+                for lamb in lambdas:
+                    self.d = d
+                    self.lamb = lamb
+                    K = self.get_kernel(x_tab)
+                    a = np.linalg.inv(K + lamb * np.identity(len(x_tab))).dot(t_tab)
+                    score = np.sum(K.T.dot(a))
+                    if score > best_score:
+                        best_score = score
+                        best_combo = (d,lamb)
+                        self.a = a
+            print('la meilleur combinaison etait: d:', best_combo[0], ', lamb: ', best_combo[1])
+        else:
+            raise ValueError("Noyau non supporté.")
+
+
 
     def affichage(self, x_tab, t_tab):
-
+        
         # Affichage
         ix = np.arange(x_tab[:, 0].min(), x_tab[:, 0].max(), 0.1)
         iy = np.arange(x_tab[:, 1].min(), x_tab[:, 1].max(), 0.1)
@@ -107,8 +175,8 @@ class MAPnoyau:
 
     def get_kernel(self, x):
         if self.noyau == "rbf":
-            # TODO: fix K size (currently Nx1)
-            K = np.exp(- np.linalg.norm(self.x_train - x, axis=1) / 2 * self.sigma_square)
+            # TODO: fix K size (currently dims:(N,1))
+            K = np.exp(-np.linalg.norm(self.x_train - x, axis=1) / 2 * self.sigma_square)
         elif self.noyau == "lineaire":
             K = self.x_train.dot(x.T)
         elif self.noyau == "polynomial":
