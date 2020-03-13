@@ -55,9 +55,9 @@ que l'on peut réécrire tel que:
 	\iff \frac{1}{2} \overrightarrow{a}^T \Phi \Phi^T \Phi \Phi^T \overrightarrow{a} - \overrightarrow{a}^T \Phi \Phi^T  t + \frac{1}{2} t^T t + {\lambda}{2} \overrightarrow{a}^T \Phi \Phi^T \overrightarrow{a}
 \end{split}
 \end{equation}
-qui etst la représentation duale de $J(\overrightarrow{w})$.
+qui est la représentation duale de $J(\overrightarrow{w})$.
 
-On définit la matrice de Gram $K$ telle qu'une matrice symétrique $NxN$ où chaque élément est une fonction noyau telle que: $ K_{nm} = \overrightarrow{\phi} (\overrightarrow{x_n})^T \overrightarrow{\phi} (\overrightarrow{x_m}) = k(\overrightarrow{x_n}, \overrightarrow{x_m})$.
+On définit la matrice de Gram $K$ telle qu'une matrice symétrique $N \times N$ où chaque élément est une fonction noyau telle que: $ K_{nm} = \overrightarrow{\phi} (\overrightarrow{x_n})^T \overrightarrow{\phi} (\overrightarrow{x_m}) = k(\overrightarrow{x_n}, \overrightarrow{x_m})$.
 
 On exprime donc $K$ tel que: $K = \Phi \Phi^T$
 
@@ -113,8 +113,7 @@ On définit maintenant $k(\overrightarrow{x})$ comme la forme vectorisée des é
 	\iff y(\overrightarrow{x}) = \left((K + \lambda I_N)^{-1} \overrightarrow{t}\right)^T k(\overrightarrow{x}) \\
 	\iff y(\overrightarrow{x}) = k(\overrightarrow{x})^T (K+\lambda I_N)^{-1} \overrightarrow{t}
 \end{split}
-\end{equation}
-\textcolor{red}{TODO: conclusion}
+\end{equation}	
 
 \section{Question 2}
 Un vecteur de support est un exemple de l'ensemble des données d'entraînement qui est situé sur la marge d'un modèle Machine à Vecteur de Support. On définit la marge comme la plus petite distance entre la surface de séparation du modèle entre les classes et l'ensemble des données d'entraînement. 
