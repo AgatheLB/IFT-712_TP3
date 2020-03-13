@@ -175,8 +175,7 @@ class MAPnoyau:
 
     def get_kernel(self, x):
         if self.noyau == "rbf":
-            # TODO: fix K size (currently dims:(N,1))
-            K = np.exp(-np.linalg.norm(self.x_train - x, axis=1) / 2 * self.sigma_square)
+            K = np.exp(-np.power(np.linalg.norm(self.x_train - x, axis=1),2) / (2 * self.sigma_square))
         elif self.noyau == "lineaire":
             K = self.x_train.dot(x.T)
         elif self.noyau == "polynomial":
