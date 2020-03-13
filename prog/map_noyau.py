@@ -7,6 +7,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+from sklearn.model_selection import train_test_split
+
 
 class MAPnoyau:
     def __init__(self, lamb=0.2, sigma_square=1.06, b=1.0, c=0.1, d=1.0, M=2, noyau='rbf'):
@@ -28,6 +30,14 @@ class MAPnoyau:
         self.d = d
         self.noyau = noyau
         self.x_train = None
+
+        # for cross validation
+        self.sigmas = np.linspace(1e-9, 2, num=15)
+        self.lambdas = np.linspace(1e-9, 2, num=15)
+        self.C = np.linspace(0, 5, num=15)
+        self.M2 = np.linspace(2, 6, num=15)
+        self.D = np.linspace(1e-5, 1e-2, num=15)
+        self.B = np.linspace(1e-5, 1e-2, num=15)
 
     def entrainement(self, x_train, t_train):
         """
@@ -67,7 +77,7 @@ class MAPnoyau:
         sinon
         """
         K = self.get_kernel(x)
-        y = np.sum(K.T.dot(self.a))
+        y = K.T.dot(self.a)
         return int(y > 0.5)
 
     def erreur(self, t, prediction):
@@ -89,7 +99,79 @@ class MAPnoyau:
         de 0.000000001 à 2, les valeurs de ``self.c`` de 0 à 5, les valeurs
         de ''self.b'' et ''self.d'' de 0.00001 à 0.01 et ``self.M`` de 2 à 6
         """
-        # AJOUTER CODE ICI
+        best_error = np.inf
+
+        if self.noyau == "lineaire":
+            best_lambda, best_error = self.get_best_lambda_and_error(x_tab, t_tab)
+            print(f'Le meilleur lamda trouvé est {best_lambda} pour l\'erreur {best_error}')
+            self.lamb = best_lambda
+
+        elif self.noyau == 'polynomial':
+            best_m = self.M2
+            best_c = self.C
+
+            for m in self.M2:
+                self.M2 = m
+                for c in self.C:
+                    self.c = c
+                    best_lambda, error = self.get_best_lambda_and_error(x_tab, t_tab)
+                    if error < best_error:
+                        best_error = error
+                        best_m = m
+                        best_c = c
+            print(f'Les paramètres M et c associés au meilleur lambda {best_lambda} sont M {best_m} et c {best_c}')
+            self.lamb = best_lambda
+            self.M2 = best_m
+            self.C = best_c
+
+        elif self.noyau == 'sigmoidal':
+            best_b = self.b
+            best_d = self.d
+            for b in self.B:
+                self.b = b
+                for d in self.D:
+                    self.d = d
+                    best_lambda, error = self.get_best_lambda_and_error(x_tab, t_tab)
+                    if error < best_error:
+                        best_error = error
+                        best_b = b
+                        best_d = d
+            print(f'Les paramètres b et d associés au meilleur lambda {best_lambda} sont b {best_b} et d {best_d}')
+            self.lamb = best_lambda
+            self.b = best_b
+            self.d = best_d
+
+        elif self.noyau == 'rbf':
+            best_s = self.sigma_square
+            for s in self.sigmas:
+                self.sigma_square = s
+                best_lambda, error = self.get_best_lambda_and_error(x_tab, t_tab)
+                if error < best_error:
+                    best_error = error
+                    best_s = s
+            print(f'Le paramètre sigma associé au meilleur lambda {best_lambda} est {best_s}')
+            self.lamb = best_lambda
+            self.sigma_square = s
+
+        self.entrainement(x_tab, t_tab)
+
+    def get_best_lambda_and_error(self, x_tab, t_tab):
+        size_validation = 0.2
+        best_error = np.inf
+        best_param = None
+
+        for lamb in self.lambdas:
+            error = 0
+            self.lamb = lamb
+            X_train, X_valid, y_train, y_valid = train_test_split(x_tab, t_tab, test_size=size_validation,
+                                                                  random_state=42)
+            self.entrainement(X_train, y_train)
+            for x_v, y_v in zip(X_valid, y_valid):
+                error += self.erreur(y_v, self.prediction(x_v))
+            if error < best_error:
+                best_param = lamb
+                best_error = error
+        return best_param, best_error
 
     def affichage(self, x_tab, t_tab):
 
@@ -116,4 +198,4 @@ class MAPnoyau:
             K = np.tanh(self.b * self.x_train.dot(x.T) + self.d)
         else:
             raise ValueError("Noyau non supporté.")
-        return K  # size NxN
+        return K
