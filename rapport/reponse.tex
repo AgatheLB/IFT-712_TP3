@@ -140,7 +140,11 @@ La contrainte $t_n\left(y_{\overrightarrow{w}}(\overrightarrow{\phi}(\overrighta
 $$
 \xi_n \geqslant 1 - t_n\left(y_{\overrightarrow{w}}(\overrightarrow{\phi}(\overrightarrow{x_n}))\right)
 $$
-Si on remplace $\xi_n$ dans l'expression de la représentation primale \textcolor{red}{TODO: référence équation}, on a alors:
+Si on remplace $\xi_n$ dans l'expression de la représentation primale (équation 7.21 dans Bishop)
+\begin{equation}
+C \sum_{n=1}^N \xi_n + \frac{1}{2} ||w||^2
+\end{equation}
+on a alors:
 \begin{equation}
 	\iff argmin_{\overrightarrow{w}, w_0} \left(\frac{1}{2} \left\lVert\overrightarrow{w}\right\rVert^2 \right) + C \sum_{n=1}^N 1 - t_n\left(y_{\overrightarrow{w}}(\overrightarrow{\phi}(\overrightarrow{x_n}))\right)
 \end{equation}
