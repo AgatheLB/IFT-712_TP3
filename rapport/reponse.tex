@@ -18,14 +18,14 @@ Cette expression est la représentation primale que l'on note $ J(\overrightarro
 Afin de déterminer sa représentation duale dans un second temps, on va déterminer $ \overrightarrow{w} $  par le calcul du gradient de $E_D$  par rapport à $ \overrightarrow{w} $ et le forcer à 0.
 
 \begin{equation}
-\begin{split}
-	\nabla_{\overrightarrow{w}} E_D(\overrightarrow{w}) &= \frac{\partial}{\partial \overrightarrow{w}} \left(\frac{1}{2} \sum_{n=1}^N \left(\overrightarrow{w}^T \overrightarrow{\phi}(\overrightarrow{x_n})^2 \overrightarrow{w} - 2 \overrightarrow{w}^T \overrightarrow{\phi}(\overrightarrow{x_n}) t_n + t_n^2\right) + \frac{\lambda}{2} \overrightarrow{w}^T \overrightarrow{w}\right) = 0 \\
-	&\iff \frac{1}{\cancel{2}} \sum_{n=1}^N \left( \cancel{2} \overrightarrow{w}^T \overrightarrow{\phi}(\overrightarrow{x_n})^2 - \cancel{2} \overrightarrow{\phi}(\overrightarrow{x_n}) t_n \right) + \lambda \overrightarrow{w} = 0 \\
-	&\iff \sum_{n=1}^N \left( \overrightarrow{w}^T \overrightarrow{\phi}(\overrightarrow{x_n})^2 - \overrightarrow{\phi}(\overrightarrow{x_n}) t_n \right) + \lambda \overrightarrow{w} = 0 \\
-	&\iff \sum_{n=1}^N \left( \overrightarrow{w}^T \overrightarrow{\phi}(\overrightarrow{x_n})^2 - \overrightarrow{\phi}(\overrightarrow{x_n}) t_n \right) = - \lambda \overrightarrow{w} \\
-	&\iff \overrightarrow{w} = - \frac{1}{\lambda}\sum_{n=1}^N \left( \overrightarrow{w}^T \overrightarrow{\phi}(\overrightarrow{x_n}) -  t_n \right)\overrightarrow{\phi}(\overrightarrow{x_n}) \\
-	&\iff \overrightarrow{w} = \sum_{n=1}^N \left( - \frac{\overrightarrow{w}^T \overrightarrow{\phi}(\overrightarrow{x_n}) -  t_n }{\lambda}\overrightarrow{\phi}(\overrightarrow{x_n})\right)
-\end{split}
+    \begin{split}
+    	\nabla_{\overrightarrow{w}} E_D(\overrightarrow{w}) &= \frac{\partial}{\partial \overrightarrow{w}} \left(\frac{1}{2} \sum_{n=1}^N \left(\overrightarrow{w}^T \overrightarrow{\phi}(\overrightarrow{x_n})^2 \overrightarrow{w} - 2 \overrightarrow{w}^T \overrightarrow{\phi}(\overrightarrow{x_n}) t_n + t_n^2\right) + \frac{\lambda}{2} \overrightarrow{w}^T \overrightarrow{w}\right) = 0 \\
+    	&\iff \frac{1}{\cancel{2}} \sum_{n=1}^N \left( \cancel{2} \overrightarrow{w}^T \overrightarrow{\phi}(\overrightarrow{x_n})^2 - \cancel{2} \overrightarrow{\phi}(\overrightarrow{x_n}) t_n \right) + \lambda \overrightarrow{w} = 0 \\
+    	&\iff \sum_{n=1}^N \left( \overrightarrow{w}^T \overrightarrow{\phi}(\overrightarrow{x_n})^2 - \overrightarrow{\phi}(\overrightarrow{x_n}) t_n \right) + \lambda \overrightarrow{w} = 0 \\
+    	&\iff \sum_{n=1}^N \left( \overrightarrow{w}^T \overrightarrow{\phi}(\overrightarrow{x_n})^2 - \overrightarrow{\phi}(\overrightarrow{x_n}) t_n \right) = - \lambda \overrightarrow{w} \\
+    	&\iff \overrightarrow{w} = - \frac{1}{\lambda}\sum_{n=1}^N \left( \overrightarrow{w}^T \overrightarrow{\phi}(\overrightarrow{x_n}) -  t_n \right)\overrightarrow{\phi}(\overrightarrow{x_n}) \\
+    	&\iff \overrightarrow{w} = \sum_{n=1}^N \left( - \frac{\overrightarrow{w}^T \overrightarrow{\phi}(\overrightarrow{x_n}) -  t_n }{\lambda}\overrightarrow{\phi}(\overrightarrow{x_n})\right)
+    \end{split}
 \end{equation}
 
 On peut simplifier cette expression par:
@@ -72,13 +72,13 @@ On détermine le gradient de $J(\overrightarrow{a})$ par rapport à $\overrighta
 
 \begin{equation}
 \begin{split}
-	\nabla_{\overrightarrow{a}} J(\overrightarrow{a}) &= 0 \\
-	\iff \frac{\partial}{\partial \overrightarrow{a}} \left(\frac{1}{2} \overrightarrow{a}^T K K \overrightarrow{a} - \overrightarrow{a}^T K \overrightarrow{t} + \frac{1}{2} \overrightarrow{t}^T \overrightarrow{t} + \frac{\lambda}{2} \overrightarrow{a}^T K \overrightarrow{a}\right) &= 0 \\
-	\iff \overrightarrow{a} K K - K \overrightarrow{t} + \lambda \overrightarrow{a} K &= 0 \\
-	\iff \overrightarrow{a}(KK+\lambda K) &= K \overrightarrow{t}\\
-	\iff \overrightarrow{a} &= \frac{K \overrightarrow{t}}{KK + \lambda K} \\
-	\iff \overrightarrow{a} &= \frac{\cancel{K} \overrightarrow{t}}{\cancel{K}(K+\lambda I_N)} \\
-	\iff \overrightarrow{a} &= (K + \lambda I_N)^{-1} \overrightarrow{t}
+	&\nabla_{\overrightarrow{a}} J(\overrightarrow{a}) = 0 \\
+	&\iff \frac{\partial}{\partial \overrightarrow{a}} \left(\frac{1}{2} \overrightarrow{a}^T K K \overrightarrow{a} - \overrightarrow{a}^T K \overrightarrow{t} + \frac{1}{2} \overrightarrow{t}^T \overrightarrow{t} + \frac{\lambda}{2} \overrightarrow{a}^T K \overrightarrow{a}\right) = 0 \\
+	&\iff \overrightarrow{a} K K - K \overrightarrow{t} + \lambda \overrightarrow{a} K = 0 \\
+	&\iff \overrightarrow{a}(KK+\lambda K) = K \overrightarrow{t}\\
+	&\iff \overrightarrow{a} = \frac{K \overrightarrow{t}}{KK + \lambda K} \\
+	&\iff \overrightarrow{a} = \frac{\cancel{K} \overrightarrow{t}}{\cancel{K}(K+\lambda I_N)} \\
+	&\iff \overrightarrow{a} = (K + \lambda I_N)^{-1} \overrightarrow{t}
 \end{split}
 \end{equation}
 
@@ -115,6 +115,8 @@ On définit maintenant $k(\overrightarrow{x})$ comme la forme vectorisée des é
 \end{split}
 \end{equation}	
 
+On peut donc bien conclure que la représentation duale permet d'exprimer la solution au problème des moindres carrés entièrement avec des fonctions kernel.
+
 \section{Question 2}
 Un vecteur de support est un exemple de l'ensemble des données d'entraînement qui est situé sur la marge d'un modèle Machine à Vecteur de Support. On définit la marge comme la plus petite distance entre la surface de séparation du modèle entre les classes et l'ensemble des données d'entraînement. 
 
@@ -133,6 +135,7 @@ $\xi_n$ représente la variable de ressort permettant d'accepter des données ma
 On a alors:
 \begin{equation}
 	argmin_{\overrightarrow{w}, w_0} \left(\frac{1}{2} \left\lVert\overrightarrow{w}\right\rVert^2 + C \sum_{n=1}^N \xi_n \right)
+    \label{eq:fin_develop_1}
 \end{equation}
 tel que: $t_n\left(y_{\overrightarrow{w}}(\overrightarrow{\phi}(\overrightarrow{x_n}))\right) \geqslant 1 - \xi_n $ et $\forall n, \xi_n \geqslant 0 $
 
@@ -140,7 +143,7 @@ La contrainte $t_n\left(y_{\overrightarrow{w}}(\overrightarrow{\phi}(\overrighta
 $$
 \xi_n \geqslant 1 - t_n\left(y_{\overrightarrow{w}}(\overrightarrow{\phi}(\overrightarrow{x_n}))\right)
 $$
-Si on remplace $\xi_n$ dans l'expression de la représentation primale \textcolor{red}{TODO: référence équation}, on a alors:
+Si on remplace $\xi_n$ dans l'expression de la représentation primale équation \ref{eq:fin_develop_1}, on a alors:
 \begin{equation}
 	\iff argmin_{\overrightarrow{w}, w_0} \left(\frac{1}{2} \left\lVert\overrightarrow{w}\right\rVert^2 \right) + C \sum_{n=1}^N 1 - t_n\left(y_{\overrightarrow{w}}(\overrightarrow{\phi}(\overrightarrow{x_n}))\right)
 \end{equation}
